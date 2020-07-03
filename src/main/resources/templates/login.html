@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>智慧大屏系统</title>
+    <link rel="stylesheet" th:href="@{/common/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/common/css/style.css}">
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url("../common/image/login_bg.png");
+            background-size: cover;
+        }
+    </style>
+
+
+</head>
+<body>
+<div class="login-div">
+    <h1>智慧大屏系统</h1>
+    <form id="login-form" method="post" class="layui-form">
+        <div class="login-form-item">
+            <input name="username" placeholder="用户名">
+        </div>
+        <div class="login-form-item">
+            <input name="password" type="password" placeholder="密码">
+        </div>
+        <button class="btn-login" lay-submit="" lay-filter="demo1">登录</button>
+    </form>
+</div>
+<script th:src="@{/common/js/jquery.min.js}"></script>
+<script th:src="@{/common/layui/layui.js}"></script>
+</body>
+
+<script>
+
+    layui.use('element', function(){
+        var element = layui.element;
+    });
+
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            var data = $("form").serialize();
+            $.ajax({
+                type : "POST", //提交方式
+                url : "/auth/login",//路径
+                data : data,//数据，这里使用的是Json格式进行传输
+                dataType: 'text',
+                async:false,
+                success : function(result) {
+                   if(result == 'success')
+                   {
+                       location.href = "/auth/index";
+                   }
+                   else{
+                       layer.msg(result, {
+                           icon : 5,
+                           time : 2000 //2秒关闭（如果不配置，默认是3秒）
+                       }, function() {
+                           layer.close(layer.index);
+                           window.parent.location.reload();
+                       });
+                   }
+                },
+                error : function(result){
+                    layer.msg("操作失败,请选择管理员!", {
+                        icon : 5,
+                        time : 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function() {
+                        layer.close(layer.index);
+                        window.parent.location.reload();
+                    });
+                }
+            });
+            return false;
+        });
+
+    });
+
+</script>
+
+</html>
