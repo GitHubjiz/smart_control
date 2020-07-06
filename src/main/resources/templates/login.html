@@ -59,12 +59,14 @@
                 success : function(result) {
                    if(result == 'success')
                    {
+                       console.log("hello")
                        location.href = "/auth/index";
                    }
                    else{
+                       console.log("hellosss")
                        layer.msg(result, {
                            icon : 5,
-                           time : 2000 //2秒关闭（如果不配置，默认是3秒）
+                           time : 5000 //2秒关闭（如果不配置，默认是3秒）
                        }, function() {
                            layer.close(layer.index);
                            window.parent.location.reload();
